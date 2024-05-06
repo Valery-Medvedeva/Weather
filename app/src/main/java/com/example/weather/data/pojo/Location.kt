@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Location(
     @SerializedName("localtime")
-    val localtime : String,
+    val time : String,
     @SerializedName("name")
-    val name: String
+    val city: String
 )

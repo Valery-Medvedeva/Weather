@@ -2,11 +2,11 @@ package com.example.weather.data.pojo
 
 import com.google.gson.annotations.SerializedName
 
-data class Current(
+data class Hour(
+    @SerializedName("time")
+    val time: String,
     @SerializedName("temp_c")
-    val currentTemp: Double,
+    val temp: Double,
     @SerializedName("condition")
-    val condition: Condition,
-    @SerializedName("last_updated")
-    val lastUpdate: String
+    val condition: Condition
 )
