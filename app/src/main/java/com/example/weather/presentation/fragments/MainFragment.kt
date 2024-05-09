@@ -14,17 +14,31 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.weather.BASE_URL
+import com.example.weather.MyApplication
 import com.example.weather.presentation.MainViewModel
 import com.example.weather.presentation.adapters.ViewPagerAdapter
 import com.example.weather.data.ApiService
 import com.example.weather.databinding.FragmentMainBinding
+import com.example.weather.di.MyViewModelFactory
 import com.example.weather.isPermissionGranted
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
 class MainFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: MyViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as MyApplication).component
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+    }
 
     private val fList = listOf(
         HoursFragment.newInstance(),
@@ -42,14 +56,12 @@ class MainFragment : Fragment() {
     private val binding: FragmentMainBinding
         get() = _binding ?: throw RuntimeException("FragmentBinding=null")
 
-    private val viewModel by lazy{
-        ViewModelProvider(this)[MainViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        component.inject(this)
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,13 +70,8 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
         init()
+        viewModel.loadWeatherInfo()
         requestWeatherData()
-    }
-
-    private fun updateCurrent(){
-        viewModel.current.observe(viewLifecycleOwner){
-
-        }
     }
 
     private fun init() {
@@ -90,23 +97,16 @@ class MainFragment : Fragment() {
     }
 
     private fun requestWeatherData() {
-        val api = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ApiService::class.java)
-
-        lifecycleScope.launch {
-            val result = api.getResponse()
-            binding.tvCity.text = result.location.city
-            binding.tvDate.text = result.location.time
-            val minTemp = result.forecast.forecastday[0].day.minTemp.toString()
-            val maxTemp = result.forecast.forecastday[0].day.maxTemp.toString()
+        viewModel.weatherInfo.observe(viewLifecycleOwner){ response ->
+            binding.tvCity.text = response.location.city
+            binding.tvDate.text = response.location.time
+            val minTemp = response.forecast.forecastday[0].day.minTemp.toString()
+            val maxTemp = response.forecast.forecastday[0].day.maxTemp.toString()
             binding.tvMaxMinTemp.text = String.format("%s%s/%s%s",minTemp,"°",maxTemp,"°")
-            binding.tvCurrentTemp.text=String.format("%s%s%s"," ",result.current.currentTemp.toString(),"°")
-            binding.tvCondition.text=result.current.condition.conditionText
+            binding.tvCurrentTemp.text=String.format("%s%s%s"," ",response.current.currentTemp.toString(),"°")
+            binding.tvCondition.text=response.current.condition.conditionText
             activity?.let {
-                Glide.with(it).load("https:"+result.current.condition.imageUrl)
+                Glide.with(it).load("https:"+response.current.condition.imageUrl)
                     .into(binding.imageWeather)
             }
         }
