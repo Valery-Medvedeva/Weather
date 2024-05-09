@@ -1,27 +1,30 @@
-package com.example.weather.fragments
+package com.example.weather.presentation.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather.BASE_URL
-import com.example.weather.adapters.HoursRVAdapter
+import com.example.weather.R
+import com.example.weather.presentation.adapters.DaysRVAdapter
+import com.example.weather.presentation.adapters.HoursRVAdapter
 import com.example.weather.data.ApiService
+import com.example.weather.databinding.FragmentDaysBinding
 import com.example.weather.databinding.FragmentHoursBinding
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class HoursFragment : Fragment() {
+class DaysFragment : Fragment() {
 
     private val binding by lazy {
-        FragmentHoursBinding.inflate(layoutInflater)
+        FragmentDaysBinding.inflate(layoutInflater)
     }
-    private val hoursRVAdapter by lazy {
-        HoursRVAdapter()
+    private val daysRVAdapter by lazy {
+        DaysRVAdapter()
     }
 
     override fun onCreateView(
@@ -46,20 +49,15 @@ class HoursFragment : Fragment() {
 
         lifecycleScope.launch {
             val result = api.getResponse()
-            val hours=result.forecast.forecastday[0].hours
-            binding.rvHours.layoutManager = LinearLayoutManager(activity)
-            binding.rvHours.adapter = hoursRVAdapter
-            hoursRVAdapter.submitList(hours)
+            val days=result.forecast.forecastday
+            binding.rvDays.layoutManager = LinearLayoutManager(activity)
+            binding.rvDays.adapter = daysRVAdapter
+            daysRVAdapter.submitList(days)
         }
-    }
-
-
-    private fun initRv() {
-
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = HoursFragment()
+        fun newInstance() = DaysFragment()
     }
 }

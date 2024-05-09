@@ -1,8 +1,9 @@
-package com.example.weather
+package com.example.weather.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.weather.fragments.MainFragment
+import com.example.weather.R
+import com.example.weather.presentation.fragments.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

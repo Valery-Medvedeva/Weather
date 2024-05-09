@@ -1,4 +1,4 @@
-package com.example.weather.adapters
+package com.example.weather.presentation.adapters
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.weather.data.pojo.Hour

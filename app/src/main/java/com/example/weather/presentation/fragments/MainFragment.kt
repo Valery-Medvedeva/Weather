@@ -1,8 +1,7 @@
-package com.example.weather.fragments
+package com.example.weather.presentation.fragments
 
 import android.Manifest
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.weather.BASE_URL
-import com.example.weather.MainViewModel
-import com.example.weather.adapters.ViewPagerAdapter
+import com.example.weather.presentation.MainViewModel
+import com.example.weather.presentation.adapters.ViewPagerAdapter
 import com.example.weather.data.ApiService
 import com.example.weather.databinding.FragmentMainBinding
 import com.example.weather.isPermissionGranted
