@@ -1,11 +1,12 @@
 package com.example.weather.data
 
+import com.example.weather.API_KEY
 import com.example.weather.data.pojo.WeatherResponse
 import retrofit2.http.GET
 
 interface ApiService {
 
-    @GET("current.json?key=24cc3ad99cc14ab2ab254556240305&q=Moscow&aqi=no")
+    @GET("forecast.json?key=${API_KEY}&q=Moscow&days=3&aqi=no&alerts=no")
     suspend fun getResponse(): WeatherResponse
 
 

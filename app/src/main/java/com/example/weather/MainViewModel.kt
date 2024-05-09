@@ -2,10 +2,14 @@ package com.example.weather
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.weather.adapters.HoursRVAdapter
+import com.example.weather.data.pojo.WeatherResponse
 
 class MainViewModel: ViewModel() {
 
-    val current=MutableLiveData<String>()
-    val list=MutableLiveData<List<String>>()
-    val picCurrent=MutableLiveData<String>()
+
+    private val hoursRVAdapter=HoursRVAdapter()
+
+    val current=MutableLiveData<WeatherResponse>()
+    val list=MutableLiveData<List<WeatherResponse>>()
 }

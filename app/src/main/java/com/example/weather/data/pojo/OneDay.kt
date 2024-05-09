@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class OneDay(
     @SerializedName("day")
-    val day: Day,
+    val day: MaxMin,
     @SerializedName("hour")
     val hours: List<Hour>,
     @SerializedName("date")

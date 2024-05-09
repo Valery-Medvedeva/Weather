@@ -2,7 +2,7 @@ package com.example.weather.data.pojo
 
 import com.google.gson.annotations.SerializedName
 
-data class Day(
+data class MaxMin(
     @SerializedName("maxtemp_c")
     val maxTemp: Double,
     @SerializedName("mintemp_c")
